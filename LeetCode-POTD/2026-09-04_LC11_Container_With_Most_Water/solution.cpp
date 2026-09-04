@@ -4,11 +4,11 @@ using namespace std;
 class Solution {
 public:
     int maxArea(vector<int>& height) {
-        int maxW = 0, n = height.size();
-        for (int i = 0; i < n; ++i) {
-            for (int j = i + 1; j < n; ++j) {
-                maxW = max(maxW, min(height[i], height[j]) * (j - i));
-            }
+        int l = 0, r = height.size() - 1, maxW = 0;
+        while (l < r) {
+            maxW = max(maxW, min(height[l], height[r]) * (r - l));
+            if (height[l] < height[r]) ++l;
+            else --r;
         }
         return maxW;
     }
