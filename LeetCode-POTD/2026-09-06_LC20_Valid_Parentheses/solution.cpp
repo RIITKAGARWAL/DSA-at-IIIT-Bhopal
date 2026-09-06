@@ -1,16 +1,20 @@
 #include <string>
+#include <stack>
 using namespace std;
 class Solution {
 public:
     bool isValid(string s) {
-        while (s.find("()") != string::npos || s.find("[]") != string::npos || s.find("{}") != string::npos) {
-            size_t p = s.find("()");
-            if (p != string::npos) s.erase(p, 2);
-            p = s.find("[]");
-            if (p != string::npos) s.erase(p, 2);
-            p = s.find("{}");
-            if (p != string::npos) s.erase(p, 2);
+        stack<char> st;
+        for (char c : s) {
+            if (c == '(' || c == '{' || c == '[') st.push(c);
+            else {
+                if (st.empty()) return false;
+                if (c == ')' && st.top() != '(') return false;
+                if (c == '}' && st.top() != '{') return false;
+                if (c == ']' && st.top() != '[') return false;
+                st.pop();
+            }
         }
-        return s.empty();
+        return st.empty();
     }
 };
