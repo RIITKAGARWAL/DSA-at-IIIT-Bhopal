@@ -4,13 +4,19 @@ using namespace std;
 class Solution {
 public:
     int trap(vector<int>& height) {
-        int n = height.size(), ans = 0;
-        for (int i = 0; i < n; ++i) {
-            int max_l = 0, max_r = 0;
-            for (int j = i; j >= 0; --j) max_l = max(max_l, height[j]);
-            for (int j = i; j < n; ++j) max_r = max(max_r, height[j]);
-            ans += min(max_l, max_r) - height[i];
+        int l = 0, r = height.size() - 1;
+        int maxL = 0, maxR = 0, water = 0;
+        while (l < r) {
+            if (height[l] <= height[r]) {
+                if (height[l] >= maxL) maxL = height[l];
+                else water += maxL - height[l];
+                ++l;
+            } else {
+                if (height[r] >= maxR) maxR = height[r];
+                else water += maxR - height[r];
+                --r;
+            }
         }
-        return ans;
+        return water;
     }
 };
