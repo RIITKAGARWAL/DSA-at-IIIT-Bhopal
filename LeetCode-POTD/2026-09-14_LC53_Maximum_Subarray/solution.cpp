@@ -4,14 +4,11 @@ using namespace std;
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
-        int max_sum = nums[0], n = nums.size();
-        for (int i = 0; i < n; ++i) {
-            int cur = 0;
-            for (int j = i; j < n; ++j) {
-                cur += nums[j];
-                max_sum = max(max_sum, cur);
-            }
+        int cur = nums[0], best = nums[0];
+        for (size_t i = 1; i < nums.size(); ++i) {
+            cur = max(nums[i], cur + nums[i]);
+            best = max(best, cur);
         }
-        return max_sum;
+        return best;
     }
 };
