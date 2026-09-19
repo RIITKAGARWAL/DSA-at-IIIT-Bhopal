@@ -2,13 +2,18 @@
 #include <algorithm>
 using namespace std;
 class Solution {
-    int dfs(int r, int c, const vector<vector<int>>& g) {
-        if (r == g.size() - 1 && c == g[0].size() - 1) return g[r][c];
-        if (r >= g.size() || c >= g[0].size()) return 1e9;
-        return g[r][c] + min(dfs(r + 1, c, g), dfs(r, c + 1, g));
-    }
 public:
     int minPathSum(vector<vector<int>>& grid) {
-        return dfs(0, 0, grid);
+        int m = grid.size(), n = grid[0].size();
+        vector<int> dp(n, 0);
+        dp[0] = grid[0][0];
+        for (int j = 1; j < n; ++j) dp[j] = dp[j - 1] + grid[0][j];
+        for (int i = 1; i < m; ++i) {
+            dp[0] += grid[i][0];
+            for (int j = 1; j < n; ++j) {
+                dp[j] = grid[i][j] + min(dp[j], dp[j - 1]);
+            }
+        }
+        return dp[n - 1];
     }
 };
