@@ -1,15 +1,21 @@
 #include <string>
+#include <vector>
 #include <algorithm>
 using namespace std;
 class Solution {
-    int solve(int i, int j, const string& w1, const string& w2) {
-        if (i == 0) return j;
-        if (j == 0) return i;
-        if (w1[i - 1] == w2[j - 1]) return solve(i - 1, j - 1, w1, w2);
-        return 1 + min({solve(i - 1, j, w1, w2), solve(i, j - 1, w1, w2), solve(i - 1, j - 1, w1, w2)});
-    }
 public:
     int minDistance(string word1, string word2) {
-        return solve(word1.size(), word2.size(), word1, word2);
+        int m = word1.size(), n = word2.size();
+        vector<int> prev(n + 1, 0), curr(n + 1, 0);
+        for (int j = 0; j <= n; ++j) prev[j] = j;
+        for (int i = 1; i <= m; ++i) {
+            curr[0] = i;
+            for (int j = 1; j <= n; ++j) {
+                if (word1[i - 1] == word2[j - 1]) curr[j] = prev[j - 1];
+                else curr[j] = 1 + min({prev[j], curr[j - 1], prev[j - 1]});
+            }
+            prev = curr;
+        }
+        return prev[n];
     }
 };
