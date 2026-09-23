@@ -1,27 +1,19 @@
 #include <string>
-#include <unordered_map>
+#include <vector>
 using namespace std;
 class Solution {
 public:
     string minWindow(string s, string t) {
-        unordered_map<char, int> tmap;
-        for (char c : t) tmap[c]++;
-        int n = s.size(), minLen = 1e9, start = 0;
-        for (int i = 0; i < n; ++i) {
-            unordered_map<char, int> smap;
-            for (int j = i; j < n; ++j) {
-                smap[s[j]]++;
-                bool ok = true;
-                for (auto& [c, count] : tmap) {
-                    if (smap[c] < count) { ok = false; break; }
-                }
-                if (ok && (j - i + 1) < minLen) {
-                    minLen = j - i + 1;
-                    start = i;
-                    break;
-                }
+        vector<int> map(128, 0);
+        for (char c : t) map[c]++;
+        int counter = t.size(), begin = 0, end = 0, d = 1e9, head = 0;
+        while (end < s.size()) {
+            if (map[s[end++]]-- > 0) counter--;
+            while (counter == 0) {
+                if (end - begin < d) d = end - (head = begin);
+                if (map[s[begin++]]++ == 0) counter++;
             }
         }
-        return minLen == 1e9 ? "" : s.substr(start, minLen);
+        return d == 1e9 ? "" : s.substr(head, d);
     }
 };
