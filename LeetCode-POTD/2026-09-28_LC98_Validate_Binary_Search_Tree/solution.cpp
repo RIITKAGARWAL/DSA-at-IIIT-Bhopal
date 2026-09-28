@@ -1,20 +1,12 @@
-#include <vector>
-using namespace std;
 struct TreeNode { int val; TreeNode *left, *right; TreeNode(int x) : val(x), left(nullptr), right(nullptr) {} };
 class Solution {
-    void inorder(TreeNode* node, vector<int>& vals) {
-        if (!node) return;
-        inorder(node->left, vals);
-        vals.push_back(node->val);
-        inorder(node->right, vals);
+    bool validate(TreeNode* root, long minVal, long maxVal) {
+        if (!root) return true;
+        if (root->val <= minVal || root->val >= maxVal) return false;
+        return validate(root->left, minVal, root->val) && validate(root->right, root->val, maxVal);
     }
 public:
     bool isValidBST(TreeNode* root) {
-        vector<int> vals;
-        inorder(root, vals);
-        for (size_t i = 1; i < vals.size(); ++i) {
-            if (vals[i] <= vals[i - 1]) return false;
-        }
-        return true;
+        return validate(root, -1e18, 1e18);
     }
 };
