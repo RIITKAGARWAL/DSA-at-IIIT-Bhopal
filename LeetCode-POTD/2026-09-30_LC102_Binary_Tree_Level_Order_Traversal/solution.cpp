@@ -1,18 +1,25 @@
 #include <vector>
+#include <queue>
 using namespace std;
 struct TreeNode { int val; TreeNode *left, *right; TreeNode(int x) : val(x), left(nullptr), right(nullptr) {} };
 class Solution {
-    void dfs(TreeNode* node, int level, vector<vector<int>>& ans) {
-        if (!node) return;
-        if (level >= ans.size()) ans.push_back({});
-        ans[level].push_back(node->val);
-        dfs(node->left, level + 1, ans);
-        dfs(node->right, level + 1, ans);
-    }
 public:
     vector<vector<int>> levelOrder(TreeNode* root) {
+        if (!root) return {};
         vector<vector<int>> ans;
-        dfs(root, 0, ans);
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            int sz = q.size();
+            vector<int> level;
+            for (int i = 0; i < sz; ++i) {
+                TreeNode* node = q.front(); q.pop();
+                level.push_back(node->val);
+                if (node->left) q.push(node->left);
+                if (node->right) q.push(node->right);
+            }
+            ans.push_back(level);
+        }
         return ans;
     }
 };
