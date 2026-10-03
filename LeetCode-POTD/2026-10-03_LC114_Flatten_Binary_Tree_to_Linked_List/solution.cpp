@@ -1,21 +1,17 @@
-#include <vector>
-using namespace std;
 struct TreeNode { int val; TreeNode *left, *right; TreeNode(int x) : val(x), left(nullptr), right(nullptr) {} };
 class Solution {
-    void pre(TreeNode* node, vector<TreeNode*>& nodes) {
-        if (!node) return;
-        nodes.push_back(node);
-        pre(node->left, nodes);
-        pre(node->right, nodes);
-    }
 public:
     void flatten(TreeNode* root) {
-        if (!root) return;
-        vector<TreeNode*> nodes;
-        pre(root, nodes);
-        for (size_t i = 1; i < nodes.size(); ++i) {
-            nodes[i - 1]->left = nullptr;
-            nodes[i - 1]->right = nodes[i];
+        TreeNode* curr = root;
+        while (curr) {
+            if (curr->left) {
+                TreeNode* pre = curr->left;
+                while (pre->right) pre = pre->right;
+                pre->right = curr->right;
+                curr->right = curr->left;
+                curr->left = nullptr;
+            }
+            curr = curr->right;
         }
     }
 };
