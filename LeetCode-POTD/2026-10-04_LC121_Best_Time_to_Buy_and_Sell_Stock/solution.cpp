@@ -4,12 +4,11 @@ using namespace std;
 class Solution {
 public:
     int maxProfit(vector<int>& prices) {
-        int maxP = 0, n = prices.size();
-        for (int i = 0; i < n; ++i) {
-            for (int j = i + 1; j < n; ++j) {
-                maxP = max(maxP, prices[j] - prices[i]);
-            }
+        int minPrice = 1e9, maxProfit = 0;
+        for (int p : prices) {
+            minPrice = min(minPrice, p);
+            maxProfit = max(maxProfit, p - minPrice);
         }
-        return maxP;
+        return maxProfit;
     }
 };
