@@ -3,16 +3,19 @@
 #include <unordered_set>
 using namespace std;
 class Solution {
-    bool solve(int start, const string& s, const unordered_set<string>& dict) {
-        if (start == s.size()) return true;
-        for (int end = start + 1; end <= s.size(); ++end) {
-            if (dict.count(s.substr(start, end - start)) && solve(end, s, dict)) return true;
-        }
-        return false;
-    }
 public:
     bool wordBreak(string s, vector<string>& wordDict) {
         unordered_set<string> dict(wordDict.begin(), wordDict.end());
-        return solve(0, s, dict);
+        vector<bool> dp(s.size() + 1, false);
+        dp[0] = true;
+        for (int i = 1; i <= s.size(); ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (dp[j] && dict.count(s.substr(j, i - j))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.size()];
     }
 };
