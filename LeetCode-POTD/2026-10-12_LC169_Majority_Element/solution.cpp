@@ -1,13 +1,13 @@
 #include <vector>
-#include <unordered_map>
 using namespace std;
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-        unordered_map<int, int> mp;
+        int candidate = 0, count = 0;
         for (int x : nums) {
-            if (++mp[x] > nums.size() / 2) return x;
+            if (count == 0) candidate = x;
+            count += (x == candidate) ? 1 : -1;
         }
-        return -1;
+        return candidate;
     }
 };
