@@ -2,10 +2,13 @@ struct ListNode { int val; ListNode *next; ListNode(int x) : val(x), next(nullpt
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        if (!head || !head->next) return head;
-        ListNode* rest = reverseList(head->next);
-        head->next->next = head;
-        head->next = nullptr;
-        return rest;
+        ListNode *prev = nullptr, *curr = head;
+        while (curr) {
+            ListNode* nxt = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = nxt;
+        }
+        return prev;
     }
 };
