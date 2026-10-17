@@ -1,35 +1,34 @@
 #include <string>
-#include <vector>
 using namespace std;
 class Trie {
-    struct Node {
-        Node* children[26] = {nullptr};
-        bool isEnd = false;
+    struct TrieNode {
+        TrieNode* next[26] = {};
+        bool isTerminal = false;
     };
-    Node* root;
+    TrieNode root;
 public:
-    Trie() { root = new Node(); }
+    Trie() {}
     void insert(string word) {
-        Node* cur = root;
+        TrieNode* p = &root;
         for (char c : word) {
-            if (!cur->children[c - 'a']) cur->children[c - 'a'] = new Node();
-            cur = cur->children[c - 'a'];
+            if (!p->next[c - 'a']) p->next[c - 'a'] = new TrieNode();
+            p = p->next[c - 'a'];
         }
-        cur->isEnd = true;
+        p->isTerminal = true;
     }
     bool search(string word) {
-        Node* cur = root;
+        TrieNode* p = &root;
         for (char c : word) {
-            if (!cur->children[c - 'a']) return false;
-            cur = cur->children[c - 'a'];
+            if (!p->next[c - 'a']) return false;
+            p = p->next[c - 'a'];
         }
-        return cur->isEnd;
+        return p->isTerminal;
     }
     bool startsWith(string prefix) {
-        Node* cur = root;
+        TrieNode* p = &root;
         for (char c : prefix) {
-            if (!cur->children[c - 'a']) return false;
-            cur = cur->children[c - 'a'];
+            if (!p->next[c - 'a']) return false;
+            p = p->next[c - 'a'];
         }
         return true;
     }
