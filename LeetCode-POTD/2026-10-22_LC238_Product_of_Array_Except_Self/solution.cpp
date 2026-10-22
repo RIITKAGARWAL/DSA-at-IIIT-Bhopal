@@ -4,10 +4,17 @@ class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
         int n = nums.size();
-        vector<int> pref(n, 1), suff(n, 1), ans(n);
-        for (int i = 1; i < n; ++i) pref[i] = pref[i - 1] * nums[i - 1];
-        for (int i = n - 2; i >= 0; --i) suff[i] = suff[i + 1] * nums[i + 1];
-        for (int i = 0; i < n; ++i) ans[i] = pref[i] * suff[i];
-        return ans;
+        vector<int> res(n, 1);
+        int fromLeft = 1;
+        for (int i = 0; i < n; ++i) {
+            res[i] = fromLeft;
+            fromLeft *= nums[i];
+        }
+        int fromRight = 1;
+        for (int i = n - 1; i >= 0; --i) {
+            res[i] *= fromRight;
+            fromRight *= nums[i];
+        }
+        return res;
     }
 };
