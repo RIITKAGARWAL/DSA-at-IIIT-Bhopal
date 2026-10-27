@@ -4,15 +4,12 @@ using namespace std;
 class Solution {
 public:
     int lengthOfLIS(vector<int>& nums) {
-        if (nums.empty()) return 0;
-        vector<int> dp(nums.size(), 1);
-        int maxL = 1;
-        for (int i = 1; i < nums.size(); ++i) {
-            for (int j = 0; j < i; ++j) {
-                if (nums[j] < nums[i]) dp[i] = max(dp[i], dp[j] + 1);
-            }
-            maxL = max(maxL, dp[i]);
+        vector<int> tails;
+        for (int x : nums) {
+            auto it = lower_bound(tails.begin(), tails.end(), x);
+            if (it == tails.end()) tails.push_back(x);
+            else *it = x;
         }
-        return maxL;
+        return tails.size();
     }
 };
